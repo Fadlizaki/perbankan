@@ -1,0 +1,165 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>bank</title>
+  </head>
+<body onLoad="atmMachineUsername();">
+
+<script>
+        var username,
+	correct_pass = (/^[0-9]{4}$/),
+	passTry = 3,
+	saldoskrang = 50000;
+	
+// Masukkan nama pengguna
+function atmMachineUsername() {
+	username = prompt("masukan nama anda");
+	if (username !== "" && username !== null) {
+		atmMachinePassword();
+	} else {
+		atmMachineUsername();
+	}
+}
+// Masukkan kata sandi yang valid
+function atmMachinePassword() {
+	var pswEntry = parseInt(prompt("oke " + username + ",masukan 4 digit pin "));
+	checkPassword(pswEntry);
+}
+// Verifikasi Kata Sandi memenuhi persyaratan
+function checkPassword(userInput) {
+    if (correct_pass.test(userInput)){
+        selectAccountType();
+    } else {
+        while (!(correct_pass.test(userInput))) {
+            if (passTry === 1) {
+				alert("pin SALAH.");
+            	alert("Percobaan maksimum terlampaui! Akunmu telah terkunci. Hubungi bank Anda untuk mendapatkan dukungan."); 
+                exit();
+                break;
+            } else {
+				passTry -= 1;
+				alert("pin SALAH. silahkan coba lagi.");
+				alert("kamu dapat " + passTry + " kesempatan untuk mencoba");
+            	atmMachinePassword();
+			}
+        }
+    }
+}
+// Pilih jenis akun mana yang akan digunakan
+function selectAccountType() {
+    var accountType = parseInt(prompt("Jenis type apa yang Anda miliki? \n 1. Tabungan \n 2.Kredit"));
+	if (accountType !== "" && accountType !== null && !isNaN(accountType)) {
+		selectFunction();
+	} else {
+		alert("Harap buat pilihan yang valid");
+		selectAccountType();
+	}
+}
+// Pilih apa yang ingin dilakukan pengguna
+function selectFunction() {
+	var atmFunctions = parseInt(prompt("Hello " + username + ", apa yang bisa kami lakukan untukmu hari ini? \n 1. setortunai \n 2. penarikan \n 3. Deposit \n 4. Exit"));
+	if (atmFunctions !== "" && atmFunctions !== null && !isNaN(atmFunctions)) {
+		switch (atmFunctions) {
+			case 1:
+				setortunai();
+				break;
+			case 2:
+				penarikan();
+				break;
+			case 3:
+				deposit();
+				break;
+			case 4:
+				exit();
+				break;
+			default:
+				alert("Harap buat pilihan yang valid");
+				selectFunction();
+		}
+	} else {
+		alert("Harap buat pilihan yang valid");
+		selectFunction();
+	}
+}
+// setortunai
+function setortunai() {
+	var setortunaiAmount = parseInt(prompt("Berapa banyak yang ingin Anda masukan? \n" + "Jumlah minimum yang dapat Anda masukan adalah Rp:50000"));
+	if (setortunaiAmount !== "" && setortunaiAmount !== null && !isNaN(setortunaiAmount)) {
+        if (setortunaiAmount >= 50000){
+            if (setortunaiAmount >= saldoskrang){
+		saldoskrang += setortunaiAmount;
+		alert("Anda telah berhasil melakukan setor Rp:" + setortunaiAmount + "\n" + "Anda sekarang memiliki Rp:" + saldoskrang);
+		toContinue();
+    } else {
+				alert("Anda tidak memiliki dana yang cukup!");
+				penarikan();
+			}
+		} else {
+			alert("Anda harus menarik setidaknya Rp:50000");
+			penarikan();
+		}
+	} else {
+		alert("Kesalahan: masukkan nomor!");
+		deposit();
+	}
+}
+// Deposit
+function deposit() {
+	var depositAmount = parseInt(prompt("Berapa banyak yang ingin Anda masukan?"));
+	if (depositAmount !== "" && depositAmount !== null && !isNaN(depositAmount)) {
+		saldoskrang += depositAmount;
+		alert("Anda telah berhasil melakukan deposit Rp:" + depositAmount + "\n" + "Anda sekarang memiliki Rp:" + saldoskrang);
+		toContinue();
+	} else {
+		alert("Kesalahan: masukkan nomor!");
+		deposit();
+	}
+}
+// penarikan
+function penarikan() {
+	var penarikanAmount = parseInt(prompt("Berapa banyak yang ingin Anda tarik? \n" + "Jumlah minimum yang dapat Anda tarik adalah Rp:50000"));
+	if (penarikanAmount !== "" && penarikanAmount !== null && !isNaN(penarikanAmount)) {
+		if (penarikanAmount >= 50000) {
+			if (penarikanAmount <= saldoskrang) {
+				saldoskrang -= penarikanAmount;
+				alert("Transaksi berhasil!");
+				alert("Saldo Anda yang tersisa adalah Rp:" + saldoskrang);
+				toContinue();
+			} else {
+				alert("Anda tidak memiliki dana yang cukup!");
+				penarikan();
+			}
+		} else {
+			alert("Anda harus menarik setidaknya Rp:50000");
+			penarikan();
+		}
+	} else {
+		alert("Kesalahan: masukkan nomor!");
+		penarikan();
+	}
+}	
+// Apakah pengguna ingin terus menggunakan ATM?
+function toContinue(){
+    var yesOrNo = parseInt(prompt("Apakah Anda ingin melakukan transaksi lain?? \n 1. Yes \n 2. No"));
+	if (yesOrNo !== "" && yesOrNo !== null) {
+    	if (yesOrNo === 2){
+			exit();
+    	}
+		else {
+			selectAccountType(); 
+    	}
+	} else {
+		alert("Harap buat pilihan yang valid");
+		toContinue();
+	}
+}
+// Keluar dari ATM
+function exit() {
+	alert("Terima kasih telah menggurui mesin ATM kami");
+		// Untuk mensimulasikan ATM nyata, bersiaplah untuk pengguna berikutnya
+		// namapengguna mesin atm();
+}
+    </script>
+</body>
+</html>
