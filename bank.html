@@ -48,7 +48,7 @@ function checkPassword(userInput) {
 }
 // Pilih jenis akun mana yang akan digunakan
 function selectAccountType() {
-    var accountType = parseInt(prompt("Jenis type apa yang Anda miliki? \n 1. Tabungan \n 2.Kredit"));
+    var accountType = parseInt(prompt("Jenis type apa yang Anda miliki? \n 1.Tabungan \n 2.Kredit"));
 	if (accountType !== "" && accountType !== null && !isNaN(accountType)) {
 		selectFunction();
 	} else {
@@ -161,5 +161,6 @@ function exit() {
 		// namapengguna mesin atm();
 }
     </script>
+	
 </body>
 </html>
